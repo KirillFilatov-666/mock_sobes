@@ -7,3 +7,4 @@ __pycache__/
 allure-results/
 allure-report/
 .pytest_cache/
+PRACTICE-PLAN.md
