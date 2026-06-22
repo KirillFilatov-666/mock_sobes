@@ -19,9 +19,16 @@ jobs:
         run: pip install -r requirements.txt
 
       - name: Run API tests
-        run: pytest tests/api -v
+        run: pytest tests/api -v --alluredir=allure-results
 
       - name: Run UI tests (headless)
         env:
           HEADLESS: "true"
-        run: pytest tests/ui -v
+        run: pytest tests/ui -v --alluredir=allure-results
+
+      - name: Upload Allure results
+        if: always()                 # сохранить даже если тесты упали
+        uses: actions/upload-artifact@v4
+        with:
+          name: allure-results
+          path: allure-results
