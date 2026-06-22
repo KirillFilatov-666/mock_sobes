@@ -1,5 +1,7 @@
 from selenium.webdriver.common.by import By
+
 from pages.base_page import BasePage
+
 
 class SecurePage(BasePage):
     FLASH = (By.ID, "flash")

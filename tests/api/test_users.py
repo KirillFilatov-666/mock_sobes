@@ -1,36 +1,48 @@
 import pytest
+from faker import Faker
 
-BASE_URL = "https://jsonplaceholder.typicode.com"
+fake = Faker()
 
 
-def test_get_users_list(api):
-    r = api.get(f"{BASE_URL}/users")
+@pytest.mark.api
+@pytest.mark.smoke
+def test_get_users_list(jp_client):
+    r = jp_client.get_users()
     assert r.status_code == 200
-    assert len(r.json()) == 10          # тут ровно 10 пользователей
+    assert len(r.json()) == 10
 
 
-def test_get_single_user(api):
-    r = api.get(f"{BASE_URL}/users/1")
+@pytest.mark.api
+def test_get_single_user(jp_client):
+    r = jp_client.get_user(1)
     assert r.status_code == 200
     assert r.json()["id"] == 1
 
 
-def test_create_post(api):
-    payload = {"title": "foo", "body": "bar", "userId": 1}
-    r = api.post(f"{BASE_URL}/posts", json=payload)
-    assert r.status_code == 201          # 201 Created
+@pytest.mark.api
+def test_create_post(jp_client):
+    # данные генерируем через Faker — каждый прогон уникальные
+    payload = {
+        "title": fake.sentence(),
+        "body": fake.text(),
+        "userId": fake.random_int(min=1, max=10),
+    }
+    r = jp_client.create_post(payload)
+    assert r.status_code == 201
     body = r.json()
-    assert body["title"] == "foo"
+    assert body["title"] == payload["title"]
     assert "id" in body
 
 
-def test_user_not_found(api):
-    r = api.get(f"{BASE_URL}/users/9999")  # такого нет
-    assert r.status_code == 404            # негативный кейс
+@pytest.mark.api
+def test_user_not_found(jp_client):
+    r = jp_client.get_user(9999)
+    assert r.status_code == 404
 
 
+@pytest.mark.api
 @pytest.mark.parametrize("user_id", [1, 2, 3])
-def test_existing_users(api, user_id):
-    r = api.get(f"{BASE_URL}/users/{user_id}")
+def test_existing_users(jp_client, user_id):
+    r = jp_client.get_user(user_id)
     assert r.status_code == 200
     assert r.json()["id"] == user_id

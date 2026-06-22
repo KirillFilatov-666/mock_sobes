@@ -1,0 +1,7 @@
+# конфиг линтера ruff
+line-length = 100
+exclude = ["venv", ".venv", "allure-results", "allure-report"]
+
+[lint]
+# E/W — стиль (pycodestyle), F — ошибки (pyflakes), I — порядок импортов (isort)
+select = ["E", "W", "F", "I"]

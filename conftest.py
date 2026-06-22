@@ -1,9 +1,13 @@
 import os
-import pytest
+
 import allure
+import pytest
 import requests
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
+
+from api.jsonplaceholder_client import JsonPlaceholderClient
+
 
 @pytest.fixture
 def driver():
@@ -33,6 +37,12 @@ def api():
     session.headers.update({"Content-Type": "application/json"})
     yield session
     session.close()
+
+
+@pytest.fixture(scope="session")
+def jp_client(api):
+    # клиент переиспользует общую сессию из фикстуры api
+    return JsonPlaceholderClient(session=api)
 
 
 @pytest.hookimpl(hookwrapper=True)

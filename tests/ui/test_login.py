@@ -1,5 +1,6 @@
 import allure
 import pytest
+
 from pages.login_page import LoginPage
 
 
@@ -19,10 +20,13 @@ def test_valid_login(driver):
 @allure.epic("Авторизация")
 @allure.feature("Логин")
 @allure.story("Невалидный вход")
-@pytest.mark.parametrize("username, password, expected", [
-    ("wrong", "SuperSecretPassword!", "Your username is invalid!"),
-    ("tomsmith", "wrong", "Your password is invalid!"),
-])
+@pytest.mark.parametrize(
+    "username, password, expected",
+    [
+        ("wrong", "SuperSecretPassword!", "Your username is invalid!"),
+        ("tomsmith", "wrong", "Your password is invalid!"),
+    ],
+)
 def test_invalid_login(driver, username, password, expected):
     login = LoginPage(driver).open()
     login.login(username, password)

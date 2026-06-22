@@ -1,0 +1,8 @@
+# pre-commit: запускает проверки автоматически перед каждым git commit
+repos:
+  - repo: https://github.com/astral-sh/ruff-pre-commit
+    rev: v0.15.18
+    hooks:
+      - id: ruff            # линтер
+        args: [--fix]       # сам чинит, что может
+      - id: ruff-format     # форматтер (приводит код к единому стилю)

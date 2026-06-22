@@ -18,6 +18,9 @@ jobs:
       - name: Install dependencies
         run: pip install -r requirements.txt
 
+      - name: Lint with ruff
+        run: ruff check .
+
       - name: Run API tests
         run: pytest tests/api -v --alluredir=allure-results
 
@@ -27,7 +30,7 @@ jobs:
         run: pytest tests/ui -v --alluredir=allure-results
 
       - name: Upload Allure results
-        if: always()                 # сохранить даже если тесты упали
+        if: always()
         uses: actions/upload-artifact@v4
         with:
           name: allure-results

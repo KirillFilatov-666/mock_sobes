@@ -1,6 +1,8 @@
 from selenium.webdriver.common.by import By
+
 from pages.base_page import BasePage
 from pages.secure_page import SecurePage
+
 
 class LoginPage(BasePage):
     URL = "https://the-internet.herokuapp.com/login"
