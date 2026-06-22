@@ -14,7 +14,11 @@ def driver():
         options.add_argument("--disable-dev-shm-usage")
     options.add_argument("--window-size=1920,1080")
 
-    driver = webdriver.Chrome(options=options)
+    remote_url = os.getenv("SELENIUM_URL")
+    if remote_url:
+        driver = webdriver.Remote(command_executor=remote_url, options=options)
+    else:
+        driver = webdriver.Chrome(options=options)
     driver.implicitly_wait(5)
     driver.maximize_window()
 
