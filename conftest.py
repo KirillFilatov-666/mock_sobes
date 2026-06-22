@@ -1,5 +1,6 @@
 import os
 import pytest
+import requests
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 
@@ -17,3 +18,11 @@ def driver():
     yield driver
 
     driver.quit()
+
+
+@pytest.fixture(scope="session")
+def api():
+    session = requests.Session()
+    session.headers.update({"Content-Type": "application/json"})
+    yield session
+    session.close()
